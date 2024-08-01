@@ -1,6 +1,8 @@
 import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from faker import Faker
+from openpyxl import workbook
 
 
 class function():
@@ -14,6 +16,21 @@ class function():
         driver = self.driver
         driver.find_element(By.XPATH, "//div[@class='self-center']").click()
         time.sleep(2)
+
+    def new_user(self):
+        driver = self.driver
+        driver.find_element(By.XPATH, "//a[@href='/account/register']").click()
+        fake = Faker()
+        name = fake.name()
+        driver.find_element(By.XPATH, "//input[@name='full_name']").send_keys(name)
+        mail = fake.email()
+        driver.find_element(By.XPATH, "//input[@name='email']").send_keys(mail)
+        clave = fake.password(length=8)
+        driver.find_element(By.XPATH, "//input[@type='password']").send_keys(clave)
+        driver.find_element(By.XPATH, "//button[@type='submit']").click()
+        print("Nombre: " + name)
+        print("Correo: " + mail)
+        print("Contraseña: " + clave)
 
     def login(self):
         driver = self.driver
