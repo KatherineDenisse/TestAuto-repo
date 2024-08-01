@@ -1,11 +1,13 @@
 import time
+
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from faker import Faker
-from openpyxl import workbook
+from Funciones_excel import FunctionEx
 
 
-class function():
+class Function:
 
     def __init__(self,driver):
         self.driver = driver
@@ -31,11 +33,22 @@ class function():
         print("Nombre: " + name)
         print("Correo: " + mail)
         print("Contraseña: " + clave)
+        # guarda en archivo excel los datos aleatorios al crear usuario
+        ruta = "C://Users//katyn//PycharmProjects//data.xlsx"
+        fu = FunctionEx(driver)
+        fu.write_data(ruta,"Hoja1",2,1,name)
+        fu.write_data(ruta,"Hoja1",2,2,mail)
+        fu.write_data(ruta,"Hoja1",2,3,clave)
 
     def login(self):
         driver = self.driver
-        driver.find_element(By.XPATH, "//input[@name='email']").send_keys("Katyna_acua16@gmail.com")
-        driver.find_element(By.XPATH, "//input[@type='password']").send_keys("Kate1234")
+        # busca en archivo excel los datos del usuario creado
+        ruta = "C://Users//katyn//PycharmProjects//data.xlsx"
+        fu = FunctionEx(driver)
+        email = fu.read_data(ruta, "Hoja1", 2, 2)
+        clave = fu.read_data(ruta, "Hoja1", 2, 3)
+        driver.find_element(By.XPATH, "//input[@name='email']").send_keys(email)
+        driver.find_element(By.XPATH, "//input[@type='password']").send_keys(clave)
         driver.find_element(By.XPATH, "//button[@type='submit']").click()
         time.sleep(2)
 
@@ -112,8 +125,20 @@ class function():
         driver.find_element(By.XPATH, "(//span[contains(@class,'pl-1')])[2]").click()
         time.sleep(2)
         driver.find_element(By.XPATH, "//span[contains(.,'Continue to payment')]").click()
-        time.sleep(3)
-        driver.find_element(By.XPATH, "//img[contains(@alt,'Cash On Delivery')]").click()
+        time.sleep(5)
+        driver.find_element(By.XPATH, "//svg[contains(@xmlns,'http://www.w3.org/2000/svg')]").click()
         time.sleep(2)
         driver.find_element(By.XPATH, "//span[contains(.,'Place Order')]").click()
         time.sleep(3)
+        #validar datos de la orden
+        try:
+            driver.find_element(By.XPATH,"//span[contains(.,'Order #')]")
+            driver.find_element(By.XPATH, "//h3[contains(.,'Contact information')]")
+            driver.find_element(By.XPATH, "//h3[contains(.,'Payment Method')]")
+            driver.find_element(By.XPATH, "//h3[contains(.,'Shipping Address')]")
+            driver.find_element(By.XPATH, "//div[@class='product-column']")
+            print("Se creó la orden correctamente")
+        except TimeoutException as ex:
+            print("No se creo la orden")
+
+
