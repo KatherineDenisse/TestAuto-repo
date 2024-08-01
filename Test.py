@@ -4,12 +4,12 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
-
 from Function import function
 
 t = 2
 
 class base_test(unittest.TestCase):
+
 
     def setUp(self):
         self.driver = webdriver.Chrome()
@@ -17,14 +17,8 @@ class base_test(unittest.TestCase):
     def testNewUser(self):
         driver = self.driver
         f = function(driver)
-        f.load_page("https://demo.evershop.io/",t)
-        driver.find_element(By.XPATH, "//a[@href='/account/register']").click()
-        time.sleep(2)
-        driver.find_element(By.XPATH, "//input[@name='full_name']").send_keys("Katherine Nieves")
-        driver.find_element(By.XPATH, "//input[@name='email']").send_keys("Katherine.nievesalva@gmail.com")
-        driver.find_element(By.XPATH, "//input[@type='password']").send_keys("Kate1234")
-        driver.find_element(By.XPATH, "//button[@type='submit']").click()
-
+        f.load_page("https://demo.evershop.io/", t)
+        f.new_user()
 
     def testLogin(self):
         driver = self.driver
