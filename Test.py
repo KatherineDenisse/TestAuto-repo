@@ -30,8 +30,8 @@ class BaseTest(unittest.TestCase):
         f.load_page("https://demo.evershop.io/", t)
         f.login()
         f.choose_products("XL")
-        f.choose_products("M")
-        f.choose_products("L")
+        #f.choose_products("M")
+        #f.choose_products("L")
 
     def testCart(self):
         driver = self.driver
@@ -39,8 +39,8 @@ class BaseTest(unittest.TestCase):
         f.load_page("https://demo.evershop.io/", t)
         f.login()
         f.choose_products("XL")
-        #f.choose_products("M")
-        #f.choose_products("L")
+        f.choose_products("M")
+        f.choose_products("L")
         driver.refresh()
         f.cart()
 
